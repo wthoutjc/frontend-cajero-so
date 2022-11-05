@@ -15,10 +15,7 @@ const Clients = () => {
   const [limit, setLimit] = useState(20);
 
   const [totalData, setTotalData] = useState(0);
-  const [data, setData] = useState([
-    [1, "Juan", 2],
-    [2, "Pedro", 1],
-  ]);
+  const [data, setData] = useState<string[][]>([]);
 
   const { socket } = useContext(SocketContext);
 
@@ -27,17 +24,29 @@ const Clients = () => {
   }, [data]);
 
   useEffect(() => {
-    console.log(socket);
+    if (socket) {
+      socket.on("data", (res: string[][]) => {
+        setData(res);
+      });
+    }
   }, [socket]);
+
+  const handleSocketEmit = () => {
+    if (socket) {
+      socket.emit("message", "Hola mundo");
+    }
+  };
 
   return (
     <Box
       sx={{
         width: "100%",
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
         overflow: "hidden",
         backgroundColor: "#CAD3C8",
-        p: 2,
+        p: 4,
       }}
     >
       <Box
@@ -64,6 +73,7 @@ const Clients = () => {
           color="success"
           size="small"
           startIcon={<SavingsIcon />}
+          onClick={handleSocketEmit}
         >
           Atender cliente
         </Button>
@@ -76,14 +86,16 @@ const Clients = () => {
       >
         <Table
           title="Clientes"
-          columns={["ID", "Nombre", "Número de transacciones"]}
+          columns={["Nombre", "Número de transacciones"]}
           to="/clients"
           context={{
             read: {
               enabled: false,
             },
           }}
-          data={data}
+          data={
+            data.slice((page - 1) * limit, (page - 1) * limit + limit) || []
+          }
           page={page}
           limit={limit}
           total_data={totalData}

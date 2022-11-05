@@ -175,18 +175,19 @@ const Table = ({
                       </TableCell>
                     )}
 
-                    {row?.map((dataRow, index) => {
-                      return (
-                        <td
-                          key={index}
-                          style={{
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {dataRow || "No registra"}
-                        </td>
-                      );
-                    })}
+                    {Array.isArray(row) &&
+                      row?.map((dataRow, index) => {
+                        return (
+                          <td
+                            key={index}
+                            style={{
+                              fontSize: "1rem",
+                            }}
+                          >
+                            {dataRow || "No registra"}
+                          </td>
+                        );
+                      })}
                   </tr>
                 );
               })
