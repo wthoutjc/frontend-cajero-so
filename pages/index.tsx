@@ -1,5 +1,5 @@
-import Head from "next/head";
-import Image from "next/image";
+// Components
+import { Table } from "../components";
 
 export default function Home() {
   return <div>new app</div>;
