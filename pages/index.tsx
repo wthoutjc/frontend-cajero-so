@@ -1,6 +1,6 @@
 // Components
-import { Table } from "../components";
+import { Clients } from "../components";
 
 export default function Home() {
-  return <div>new app</div>;
+  return <Clients />;
 }

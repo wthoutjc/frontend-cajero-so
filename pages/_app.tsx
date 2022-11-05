@@ -12,13 +12,18 @@ import { darkTheme } from "../themes";
 // Notifications
 import { Notifications } from "../components";
 
+// Socket
+import { ContextSockerProvider } from "../components";
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Notifications />
-        <Component {...pageProps} />
+        <ContextSockerProvider>
+          <CssBaseline />
+          <Notifications />
+          <Component {...pageProps} />
+        </ContextSockerProvider>
       </ThemeProvider>
     </Provider>
   );

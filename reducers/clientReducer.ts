@@ -31,6 +31,6 @@ export { clientSlice };
 export const { addClient, removeClient } = clientSlice.actions;
 
 // Selector to access to the store
-export const selectAuth = (state: AppState) => state.client;
+export const selectClient = (state: AppState) => state.client;
 
 export default clientSlice.reducer;
