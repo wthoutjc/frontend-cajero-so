@@ -10,7 +10,19 @@ import SavingsIcon from "@mui/icons-material/Savings";
 // Context
 import { SocketContext } from "../../components";
 
+// Services
+import { serveCustomer } from "../../services";
+
+// Redux
+import { useAppDispatch } from "../../hooks";
+import { newNotification } from "../../reducers";
+
+// uuid
+import { v4 as uuid } from "uuid";
+
 const Clients = () => {
+  const dispatch = useAppDispatch();
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
 
@@ -31,10 +43,16 @@ const Clients = () => {
     }
   }, [socket]);
 
-  const handleSocketEmit = () => {
-    if (socket) {
-      socket.emit("message", "Hola mundo");
-    }
+  const handleServeCustomer = async () => {
+    const { ok, message } = await serveCustomer();
+    const notification = {
+      id: uuid(),
+      title: ok ? "Éxito" : "Error",
+      message,
+      type: ok ? "success" : ("error" as "success" | "error"),
+      autoDismiss: 5000,
+    };
+    dispatch(newNotification(notification));
   };
 
   return (
@@ -73,7 +91,7 @@ const Clients = () => {
           color="success"
           size="small"
           startIcon={<SavingsIcon />}
-          onClick={handleSocketEmit}
+          onClick={handleServeCustomer}
         >
           Atender cliente
         </Button>

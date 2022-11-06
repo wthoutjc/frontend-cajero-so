@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import "../styles/styles.scss";
+import 'animate.css';
 
 // Redux
 import { Provider } from "react-redux";
