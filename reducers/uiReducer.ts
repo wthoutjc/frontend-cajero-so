@@ -6,6 +6,7 @@ import { AppState } from "../store";
 
 const initialState: UI = {
   notifications: [],
+  active: false,
 };
 
 interface NewNotification {
@@ -28,13 +29,17 @@ const uiSlice = createSlice({
         (notification) => notification.id !== action.payload
       );
     },
+    setActive: (state: UI, action) => {
+      state.active = action.payload;
+    },
   },
 });
 
 export { uiSlice };
 
 // Actions
-export const { newNotification, removeNotification } = uiSlice.actions;
+export const { newNotification, removeNotification, setActive } =
+  uiSlice.actions;
 
 // Select to access to the store
 export const selectUI = (state: AppState) => state.ui;

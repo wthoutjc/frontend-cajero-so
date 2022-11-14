@@ -3,7 +3,7 @@ import { Checkbox, TableCell, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
 // Components
-import { TablePagination, TableToolbar, TableSkeleton } from "./";
+import { TablePagination, TableSkeleton } from "./";
 
 // Interfaces
 import { IContextTable } from "../../../interfaces";
@@ -78,15 +78,6 @@ const Table = ({
 
   return (
     <>
-      {selected && (
-        <TableToolbar
-          title={title}
-          to={to}
-          numSelected={selected?.length}
-          selected={selected[0]}
-          context={context}
-        />
-      )}
       {!!page && !!setPage && !!limit && !!setLimit && !!total_data && (
         <TablePagination
           loading={loading}
@@ -184,7 +175,7 @@ const Table = ({
                               fontSize: "1rem",
                             }}
                           >
-                            {dataRow || "No registra"}
+                            {dataRow || "0"}
                           </td>
                         );
                       })}
