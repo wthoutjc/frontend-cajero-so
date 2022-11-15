@@ -38,12 +38,14 @@ const Process = ({ data }: Props) => {
         <Table
           title="Procesos"
           columns={[
+            "Proceso",
             "T. Llegada",
             "Ráfaga",
             "T. Comienzo",
             "T. Final",
             "T. Retorno",
             "T. Espera",
+            "Bloqueo",
           ]}
           to="/clients"
           context={{

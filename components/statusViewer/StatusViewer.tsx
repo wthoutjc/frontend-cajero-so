@@ -18,6 +18,8 @@ const StatusViewer = () => {
   useEffect(() => {
     if (socket) {
       socket.on("cycle", (res: number) => {
+        console.log(res);
+        
         if (res === 0) dispatch(setActive(false));
         else {
           setLeft(res);
