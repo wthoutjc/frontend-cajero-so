@@ -55,7 +55,7 @@ const Process = ({ data, cycle }: Props) => {
         <Table
           title="Procesos"
           columns={[
-            "Proceso",
+            "Procesos",
             "T. Llegada",
             "Ráfaga",
             "T. Comienzo",

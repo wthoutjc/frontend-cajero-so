@@ -115,7 +115,7 @@ const Gantt = ({ gridElement, data, cycle }: Props) => {
         >
           <Typography variant="h6" fontWeight={500} fontSize={14}>
             {" "}
-            No hay datos para mostrar{" "}
+            No hay datos para r{" "}
           </Typography>
         </Box>
       )}
