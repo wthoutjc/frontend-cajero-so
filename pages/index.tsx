@@ -107,7 +107,7 @@ export default function Home() {
             }
             onClick={active ? handleStopService : handleStartService}
           >
-            {active ? "Terminar" : "Iniciar"}
+            {active ? "Terminar" : "Iniciarr"}
           </Button>
         </Box>
       </Box>
