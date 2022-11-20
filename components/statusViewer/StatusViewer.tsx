@@ -31,7 +31,7 @@ const StatusViewer = () => {
     <Box
       sx={{
         position: "absolute",
-        height: "100%",
+        height: "101%",
         backgroundColor: "#d63031",
         zIndex: 1000,
         width: "5px",
