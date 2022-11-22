@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 
 // Components
@@ -7,25 +6,9 @@ import { ItemGannt, StatusViewer } from "../../components";
 interface Props {
   data: number[][];
   gridElement: number[];
-  cycle: number;
 }
 
-// Redux
-import { useAppSelector } from "../../hooks";
-
-const Gantt = ({ gridElement, data, cycle }: Props) => {
-  const { active } = useAppSelector((state) => state.ui)
-
-  const [trueData, setTrueData] = useState<number[][]>([]);
-
-  useEffect(() => {
-    if (!active)
-      setTrueData(data.slice(0, 1))
-    else {
-      setTrueData(data.map(array => cycle >= array[3] ? array : []))
-    }
-  }, [data, cycle]);
-
+const Gantt = ({ gridElement, data }: Props) => {
   return (
     <Box
       sx={{
@@ -65,7 +48,7 @@ const Gantt = ({ gridElement, data, cycle }: Props) => {
             }}
           >
             <StatusViewer />
-            {trueData.map((row, index) => (
+            {data.map((row, index) => (
               <Box
                 key={index}
                 sx={{

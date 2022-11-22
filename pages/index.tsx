@@ -24,7 +24,7 @@ export default function Home() {
   const [view, setView] = useState<"table" | "gantt" | "together">("together");
 
   const [data, setData] = useState<number[][]>([]);
-  const [dataTable, setDataTable] = useState<number[][]>([])
+  const [dataTable, setDataTable] = useState<number[][]>([]);
   const [gridElement, setGridElement] = useState<number[]>([]);
 
   const [cycle, setCycle] = useState<number>(0);
@@ -46,18 +46,19 @@ export default function Home() {
 
   useEffect(() => {
     if (socket) {
-      socket.on("data", (res: number[][]) => {        
+      socket.on("data", (res: number[][]) => {
         setData(res);
       });
 
       socket.on("data-table", (res: number[][]) => {
         setDataTable(res);
       });
-      
+
       socket.on("cycle", (res: number) => {
         setCycle(res);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, dispatch]);
 
   useEffect(() => {
@@ -111,9 +112,11 @@ export default function Home() {
           </Button>
         </Box>
       </Box>
-      {(view === "table" || view == "together") && <Process data={dataTable} cycle={cycle} />}
+      {(view === "table" || view == "together") && (
+        <Process data={dataTable} cycle={cycle} />
+      )}
       {(view === "gantt" || view == "together") && (
-        <Gantt data={data} gridElement={gridElement} cycle={cycle} />
+        <Gantt data={data} gridElement={gridElement} />
       )}
     </Box>
   );

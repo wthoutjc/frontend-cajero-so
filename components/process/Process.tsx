@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Process = ({ data, cycle }: Props) => {
-  const { active } = useAppSelector((state) => state.ui)
+  const { active } = useAppSelector((state) => state.ui);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
@@ -28,12 +28,19 @@ const Process = ({ data, cycle }: Props) => {
 
   useEffect(() => {
     if (!active)
-      setTrueData(data.map(array => [array[0], array[1], array[2], 0, 0, 0, 0, 0]))
-    else
-      {
-        setTrueData(data.map(array=> cycle >= array[3] ? array : [array[0], array[1], array[2], 0,0,0,0,0]))
-      }
-  }, [data, cycle]);
+      setTrueData(
+        data.map((array) => [array[0], array[1], array[2], 0, 0, 0, 0, 0])
+      );
+    else {
+      setTrueData(
+        data.map((array) =>
+          cycle >= array[3]
+            ? array
+            : [array[0], array[1], array[2], 0, 0, 0, 0, 0]
+        )
+      );
+    }
+  }, [data, cycle, active]);
 
   return (
     <Box
@@ -71,7 +78,7 @@ const Process = ({ data, cycle }: Props) => {
             },
           }}
           data={
-            trueData.slice((page - 1) * limit, (page - 1) * limit + limit) || []
+            data.slice((page - 1) * limit, (page - 1) * limit + limit) || []
           }
           page={page}
           limit={limit}
