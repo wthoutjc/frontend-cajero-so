@@ -1,27 +1,34 @@
-import { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import { Box, Typography } from "@mui/material";
 
 // Components
-import { Table } from "../ui/table";
+import { Table, SocketContext } from "../../components";
 
-interface Props {
-  data: number[][];
-}
-
-const Process = ({ data }: Props) => {
+const RoundRobin = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
 
+  const [data, setData] = useState<number[][]>([]);
   const [totalData, setTotalData] = useState(0);
+
+  const { socket } = useContext(SocketContext);
 
   useEffect(() => {
     setTotalData(data.length);
   }, [data]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on("round_robin-data", (res: number[][]) => {
+        setData(res);
+      });
+    }
+  }, [socket]);
+
   return (
     <Box
       sx={{
-        width: "75%",
+        width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -35,19 +42,19 @@ const Process = ({ data }: Props) => {
           backgroundColor: "#112233",
         }}
       >
+        <Typography
+          variant="body1"
+          fontWeight={800}
+          sx={{
+            p: 1,
+            backgroundColor: "#001122",
+          }}
+        >
+          Round Robin
+        </Typography>
         <Table
           title="Procesos"
-          columns={[
-            "Proceso",
-            "T. Llegada",
-            "Ráfaga",
-            "T. Comienzo",
-            "T. Final",
-            "T. Retorno",
-            "T. Espera",
-            "Bloqueo",
-            "RE"
-          ]}
+          columns={["Proceso", "T. Llegada", "Ráfaga"]}
           to="/clients"
           context={{
             read: {
@@ -68,4 +75,4 @@ const Process = ({ data }: Props) => {
   );
 };
 
-export { Process };
+export { RoundRobin };

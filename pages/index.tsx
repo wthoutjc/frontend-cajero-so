@@ -1,5 +1,11 @@
 import { useState, useEffect, useContext } from "react";
-import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  CircularProgress,
+  Slider,
+} from "@mui/material";
 
 // Components
 import {
@@ -8,6 +14,10 @@ import {
   ToggleView,
   SocketContext,
   SkeletonPage,
+  TrafficLight,
+  RoundRobin,
+  Sjf,
+  Fcfs,
 } from "../components";
 
 // Icons
@@ -17,6 +27,10 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setActive } from "../reducers";
 
+function valuetext(value: number) {
+  return `${value}`;
+}
+
 export default function Home() {
   const dispatch = useAppDispatch();
   const { active } = useAppSelector((state) => state.ui);
@@ -25,9 +39,8 @@ export default function Home() {
 
   const [data, setData] = useState<number[][]>([]);
   const [dataTable, setDataTable] = useState<number[][]>([]);
-  const [gridElement, setGridElement] = useState<number[]>([]);
 
-  const [cycle, setCycle] = useState<number>(0);
+  const [quantum, setQuantum] = useState(4);
 
   const { socket } = useContext(SocketContext);
 
@@ -46,6 +59,12 @@ export default function Home() {
 
   useEffect(() => {
     if (socket) {
+      socket.emit("quantum", quantum);
+    }
+  }, [quantum, socket]);
+
+  useEffect(() => {
+    if (socket) {
       socket.on("data", (res: number[][]) => {
         setData(res);
       });
@@ -53,20 +72,9 @@ export default function Home() {
       socket.on("data-table", (res: number[][]) => {
         setDataTable(res);
       });
-
-      socket.on("cycle", (res: number) => {
-        setCycle(res);
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, dispatch]);
-
-  useEffect(() => {
-    if (data[data.length - 1] && data[data.length - 1][4])
-      setGridElement(
-        [...Array(data[data.length - 1][4])].map((value, index) => index + 1)
-      );
-  }, [data]);
 
   if (!socket) return <SkeletonPage />;
 
@@ -89,7 +97,7 @@ export default function Home() {
         }}
       >
         <Typography variant="h6" fontSize={22} fontWeight={800}>
-          FCFS - Procesos
+          Round Robin - Procesos
         </Typography>
         <Box>
           <ToggleView view={view} setView={setView} />
@@ -112,12 +120,84 @@ export default function Home() {
           </Button>
         </Box>
       </Box>
-      {(view === "table" || view == "together") && (
-        <Process data={dataTable} cycle={cycle} />
-      )}
-      {(view === "gantt" || view == "together") && (
-        <Gantt data={data} gridElement={gridElement} />
-      )}
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "#001122",
+          p: 2,
+        }}
+      >
+        <Box
+          sx={{
+            width: "420px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ width: "160px" }} variant="body2">
+            Quantum {`[${quantum}]`}:
+          </Typography>
+          <Slider
+            disabled={active}
+            aria-label="Temperature"
+            value={quantum}
+            onChange={(event, newValue) => {
+              setQuantum(newValue as number);
+            }}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={2}
+            max={6}
+          />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          height: "100%",
+          flexDirection: "column",
+          overflow: "auto",
+        }}
+      >
+        {(view === "table" || view == "together") && (
+          <Box
+            sx={{
+              display: "flex",
+              height: "50%",
+              width: "100%",
+            }}
+          >
+            <Process data={dataTable} />
+            <Box
+              sx={{
+                display: "flex",
+                width: "25%",
+              }}
+            >
+              <RoundRobin />
+              {/* <Sjf /> */}
+              {/* <Fcfs /> */}
+            </Box>
+          </Box>
+        )}
+        {(view === "gantt" || view == "together") && (
+          <Box
+            sx={{
+              display: "flex",
+              height: "50%",
+            }}
+          >
+            <Gantt
+              data={data}
+              gridElement={[...Array(100)].map((value, index) => index)}
+            />
+            <TrafficLight />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 }

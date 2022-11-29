@@ -13,6 +13,7 @@ const Gantt = ({ gridElement, data }: Props) => {
     <Box
       sx={{
         display: "flex",
+        width: "95%",
         flexDirection: "column",
         height: "100%",
         backgroundColor: "#001122",
@@ -56,32 +57,33 @@ const Gantt = ({ gridElement, data }: Props) => {
                   display: "flex",
                 }}
               >
-                {[...Array(row[4])].map((value, index) =>
-                  index >= row[1] ? (
-                    <Grid item xs={0.5} key={row[1] + index}>
-                      <ItemGannt
-                        sx={{
-                          backgroundColor:
-                            index >= row[3]
-                              ? index >= row[3] + row[7] && row[7] !== 0
-                                ? "#353b48"
-                                : "#218c74"
-                              : "#7f8c8d",
-                        }}
-                      >
-                        {row[0]}
-                      </ItemGannt>
-                    </Grid>
-                  ) : (
-                    <Grid item xs={0.5} key={row[1] + index}>
-                      <ItemGannt
-                        sx={{
-                          backgroundColor: "#001122",
-                          height: "100%",
-                        }}
-                      ></ItemGannt>
-                    </Grid>
-                  )
+                {[...Array(row[7] ? row[4] + (row[2] - row[7]) : row[4])].map(
+                  (value, index) =>
+                    index >= row[1] ? (
+                      <Grid item xs={0.5} key={row[1] + index}>
+                        <ItemGannt
+                          sx={{
+                            backgroundColor:
+                              index >= row[3]
+                                ? index >= row[3] + row[7] && row[7] !== 0
+                                  ? "#353b48"
+                                  : "#218c74"
+                                : "#7f8c8d",
+                          }}
+                        >
+                          {row[0]}
+                        </ItemGannt>
+                      </Grid>
+                    ) : (
+                      <Grid item xs={0.5} key={row[1] + index}>
+                        <ItemGannt
+                          sx={{
+                            backgroundColor: "#001122",
+                            height: "100%",
+                          }}
+                        ></ItemGannt>
+                      </Grid>
+                    )
                 )}
               </Box>
             ))}
