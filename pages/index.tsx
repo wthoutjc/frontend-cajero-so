@@ -40,6 +40,10 @@ export default function Home() {
   const [data, setData] = useState<number[][]>([]);
   const [dataTable, setDataTable] = useState<number[][]>([]);
 
+  const [roundRobinData, setRoundRobinData] = useState<number[][]>([]);
+  const [sfjData, setSfjData] = useState<number[][]>([]);
+  const [fcfsData, setFcfsData] = useState<number[][]>([]);
+
   const [quantum, setQuantum] = useState(4);
 
   const { socket } = useContext(SocketContext);
@@ -72,8 +76,19 @@ export default function Home() {
       socket.on("data-table", (res: number[][]) => {
         setDataTable(res);
       });
+
+      socket.on("round_robin-data", (res: number[][]) => {
+        setRoundRobinData(res);
+      });
+
+      socket.on("sjf-data", (res: number[][]) => {
+        setSfjData(res);
+      });
+
+      socket.on("fcfs-data", (res: number[][]) => {
+        setFcfsData(res);
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, dispatch]);
 
   if (!socket) return <SkeletonPage />;
@@ -97,7 +112,7 @@ export default function Home() {
         }}
       >
         <Typography variant="h6" fontSize={22} fontWeight={800}>
-          Round Robin - Procesos
+          Multi Core - Procesos
         </Typography>
         <Box>
           <ToggleView view={view} setView={setView} />
@@ -174,12 +189,12 @@ export default function Home() {
             <Box
               sx={{
                 display: "flex",
-                width: "25%",
+                width: "65%",
               }}
             >
-              <RoundRobin />
-              {/* <Sjf /> */}
-              {/* <Fcfs /> */}
+              <RoundRobin data={roundRobinData} />
+              <Sjf data={sfjData} />
+              <Fcfs data={fcfsData} />
             </Box>
           </Box>
         )}

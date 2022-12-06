@@ -4,26 +4,21 @@ import { Box, Typography } from "@mui/material";
 // Components
 import { Table, SocketContext } from "../../components";
 
-const RoundRobin = () => {
+interface Props {
+  data: number[][];
+}
+
+const RoundRobin = ({ data }: Props) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
-
-  const [data, setData] = useState<number[][]>([]);
-  const [totalData, setTotalData] = useState(0);
 
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
-    setTotalData(data.length);
-  }, [data]);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("round_robin-data", (res: number[][]) => {
-        setData(res);
-      });
+    if (socket && data.length > 0) {
+      socket.emit("rr-new_process", true);
     }
-  }, [socket]);
+  }, [socket, data.length]);
 
   return (
     <Box
@@ -66,7 +61,7 @@ const RoundRobin = () => {
           }
           page={page}
           limit={limit}
-          total_data={totalData}
+          total_data={data.length}
           setPage={setPage}
           setLimit={setLimit}
         />

@@ -21,7 +21,7 @@ const Process = ({ data }: Props) => {
   return (
     <Box
       sx={{
-        width: "75%",
+        width: "45%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -46,7 +46,8 @@ const Process = ({ data }: Props) => {
             "T. Retorno",
             "T. Espera",
             "Bloqueo",
-            "RE"
+            "RE",
+            "Origen"
           ]}
           to="/clients"
           context={{

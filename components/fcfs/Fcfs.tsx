@@ -1,29 +1,16 @@
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 
 // Components
-import { Table, SocketContext } from "../../components";
+import { Table } from "../../components";
 
-const Fcfs = () => {
+interface Props {
+  data: number[][];
+}
+
+const Fcfs = ({ data }: Props) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
-
-  const [data, setData] = useState<number[][]>([]);
-  const [totalData, setTotalData] = useState(0);
-
-  const { socket } = useContext(SocketContext);
-
-  useEffect(() => {
-    setTotalData(data.length);
-  }, [data]);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("fcfs-data", (res: number[][]) => {
-        setData(res);
-      });
-    }
-  }, [socket]);
 
   return (
     <Box
@@ -66,7 +53,7 @@ const Fcfs = () => {
           }
           page={page}
           limit={limit}
-          total_data={totalData}
+          total_data={data.length}
           setPage={setPage}
           setLimit={setLimit}
         />
